@@ -33,8 +33,11 @@ public class InjectUtility {
                                 try {
                                     String packageName = context.getPackageName();
                                     Resources resources = context.getPackageManager().getResourcesForApplication(packageName);
-                                    context.getResources();
-                                    viewId = resources.get
+//                                    context.getResources(); //here to test the difference
+                                    viewId = resources.getIdentifier(idStr,"id",packageName);
+                                    if (viewId == 0 ){
+                                        throw new RuntimeException(String.format("%s 的属性%s关联了id=%s,但其无效",clazz.getSimpleName(),field.getName(),idStr));
+                                    }
                                 }catch (Exception e){
 
                                 }

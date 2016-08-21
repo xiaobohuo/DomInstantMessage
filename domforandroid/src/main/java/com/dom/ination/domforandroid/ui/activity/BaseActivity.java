@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.dom.ination.domforandroid.R;
 import com.dom.ination.domforandroid.common.setting.SettingUtility;
+import com.dom.ination.domforandroid.support.inject.InjectUtility;
 
 import java.lang.reflect.Field;
 import java.util.Locale;
@@ -156,7 +157,7 @@ public class BaseActivity extends AppCompatActivity {
     public void setContentView(View view) {
         super.setContentView(view,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         rootView = view;
-        InjectUtility.initInjectView(this);
+        InjectUtility.initInjectedView(this);
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         if (mToolbar!=null){
             setSupportActionBar(mToolbar);
