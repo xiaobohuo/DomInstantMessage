@@ -7,6 +7,7 @@ import com.dom.ination.domforandroid.common.setting.SettingExtra;
 import com.dom.ination.domforandroid.common.setting.SettingUtility;
 import com.dom.ination.domforandroid.common.utils.Logger;
 import com.dom.ination.domforandroid.network.cache.ICacheUtility;
+import com.dom.ination.domforandroid.network.http.DefHttpUtility;
 import com.dom.ination.domforandroid.network.http.HttpConfig;
 import com.dom.ination.domforandroid.network.http.IHttpUtility;
 import com.dom.ination.domforandroid.network.http.Params;
