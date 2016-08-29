@@ -1,10 +1,13 @@
 package com.dom.ination.domforandroid.component.bitmaploader.core;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 
+import com.dom.ination.domforandroid.common.utils.BitmapUtil;
 import com.dom.ination.domforandroid.common.utils.KeyGenerator;
+import com.dom.ination.domforandroid.common.utils.Logger;
 import com.dom.ination.domforandroid.component.bitmaploader.BitmapLoader;
 
 import java.io.ByteArrayInputStream;
@@ -120,6 +123,58 @@ public class BitmapProcess {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length, options);
-        BitmapType bitmapType = BitmapUtil.getType(bitmapBytes);
+        BitmapUtil.BitmapType bitmapType = BitmapUtil.getType(bitmapBytes);
+        MyBitmap myBitmap = null;
+
+        // 如果图片取自压缩目录，则不再对图片做压缩或者其他处理，直接返回
+        if ((flag & 0x01) != 0) {
+            myBitmap = new MyBitmap(BitmapDecoder.decodeSampledBitmapFromByte(context, bitmapBytes), url);
+            return myBitmap;
+        }
+
+        // 判断是否需要压缩图片
+        IBitmapCompress bitmapCompress = config.getBitmapCompress().newInstance();
+        myBitmap = bitmapCompress.compress(bitmapBytes, getOrigFile(url), url, config, options.outWidth, options.outHeight);
+        Bitmap bitmap = myBitmap.getBitmap();
+        if (bitmap == null) {
+            // 如果没压缩，就原始解析图片
+            bitmap = BitmapDecoder.decodeSampledBitmapFromByte(context, bitmapBytes);
+        } else {
+            // 如果图片做了压缩处理，则需要写入二级缓存
+            writeToComp = true;
+        }
+
+        // 对图片做圆角处理
+        if (bitmapType != BitmapUtil.BitmapType.gif && config.getCorner() > 0) {
+            bitmap = BitmapUtil.setImageCorner(bitmap, config.getCorner());
+            bitmapType = BitmapUtil.BitmapType.png;
+        }
+
+        // GIF图片，进行压缩
+        if (bitmapType == BitmapUtil.BitmapType.gif)
+            writeToComp = true;
+
+        // 当图片做了圆角、压缩处理后，将图片放置二级缓存
+        if (writeToComp && config.isCompressCacheEnable()) {
+            String key = KeyGenerator.generateMD5(BitmapLoader.getKeyByConfig(url, config));
+
+            // PNG以外其他格式，都压缩成JPG格式
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            bitmap.compress(BitmapUtil.BitmapType.png == bitmapType ? Bitmap.CompressFormat.PNG : Bitmap.CompressFormat.JPEG, 100, out);
+            byte[] bytes = out.toByteArray();
+            writeBytesToCompressDisk(url, key, bytes);
+
+            // 如果是GIF图片，无论如何，返回压缩格式图片
+            if (bitmapType == BitmapUtil.BitmapType.gif) {
+                Logger.v(TAG, String.format("parse gif image[url=%s,key=%s]", url, key));
+                bitmap.recycle();
+                bitmap = BitmapDecoder.decodeSampledBitmapFromByte(context, bytes);
+            }
+        }
+
+        myBitmap.setBitmap(bitmap);
+        return myBitmap;
+
+
     }
 }

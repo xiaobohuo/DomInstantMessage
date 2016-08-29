@@ -4,6 +4,7 @@ import com.dom.ination.domforandroid.component.bitmaploader.display.Displayer;
 import com.dom.ination.domforandroid.component.bitmaploader.display.FadeInDisplayer;
 import com.dom.ination.domforandroid.component.bitmaploader.download.DownloadProcess;
 import com.dom.ination.domforandroid.component.bitmaploader.download.Downloader;
+import com.dom.ination.domforandroid.component.bitmaploader.download.WebDownloader;
 
 /**
  * Created by huoxiaobo on 16/8/28.
@@ -19,8 +20,8 @@ public class ImageConfig {
     private Displayer displayer;
     private int loadingRes;
     private int loadFailedRes;
-    private boolean cacheEnablle = true; //
-    private boolean compressCacheEnabled = true; // 是否保存图片到压缩缓存文件
+    private boolean cacheEnable = true; //
+    private boolean compressCacheEnable = true; // 是否保存图片到压缩缓存文件
 
     public ImageConfig() {
         downloaderClass = WebDownloader.class;
@@ -93,11 +94,11 @@ public class ImageConfig {
     }
 
     public int getLoadfaildRes() {
-        return loadfaildRes;
+        return loadFailedRes;
     }
 
     public void setLoadfaildRes(int loadfaildRes) {
-        this.loadfaildRes = loadfaildRes;
+        this.loadFailedRes = loadfaildRes;
     }
 
     public int getCorner() {
