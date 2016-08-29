@@ -96,7 +96,7 @@ public abstract class ABaseFragment extends Fragment implements ITaskManager, Bi
         layoutInit(inflater, savedInstanceState);
     }
 
-    private void _layoutInit(LayoutInflater inflater, Bundle savedInstanceState) {
+    void _layoutInit(LayoutInflater inflater, Bundle savedInstanceState) {
         InjectUtility.initInjectedView(getActivity(), this, getContentView());
         if (emptyLayout != null) {
             View reloadView = emptyLayout.findViewById(R.id.layoutReload);
