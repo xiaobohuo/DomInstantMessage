@@ -1,6 +1,7 @@
 package com.dom.ination.domforandroid.ui.fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.dom.ination.domforandroid.common.utils.Logger;
@@ -72,6 +73,30 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
         } else {
             mPaging = newPaging();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        // 将分页信息保存起来
+        if (mPaging != null)
+            outState.putSerializable(SAVED_PAGING, mPaging);
+        if (refreshConfig != null)
+            outState.putSerializable(SAVED_CONFIG, refreshConfig);
+
+        onSaveDatas(outState);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    protected void onSaveDatas(Bundle outState) {
+        // 将数据保存起来
+        if (getAdapter() != null && getAdapter().getDatas().size() != 0)
+            outState.putSerializable(SAVED_DATAS, getAdapter().getDatas());
+    }
+
+    @Override
+    protected void layoutInit(LayoutInflater inflater, Bundle savedInstanceState) {
+        super.layoutInit(inflater, savedInstanceState);
     }
 
     public static class RefreshConfig implements Serializable {
