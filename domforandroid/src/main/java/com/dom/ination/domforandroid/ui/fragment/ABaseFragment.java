@@ -2,8 +2,6 @@ package com.dom.ination.domforandroid.ui.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
-import android.content.SyncAdapterType;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
