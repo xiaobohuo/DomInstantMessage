@@ -1,5 +1,6 @@
 package com.dom.ination.domforandroid.ui.fragment;
 
+import android.os.Bundle;
 import android.view.ViewGroup;
 
 import com.dom.ination.domforandroid.common.utils.Logger;
@@ -50,6 +51,27 @@ public abstract class APagingFragment<T extends Serializable, Ts extends Seriali
         update,
         // 下拉，刷新最新
         refresh
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState == null) {
+            refreshConfig = new RefreshConfig();
+        }
+        else {
+            refreshConfig = (RefreshConfig) savedInstanceState.getSerializable(SAVED_CONFIG);
+        }
+
+        ArrayList<T> datas = savedInstanceState == null ? new ArrayList<T>() : (ArrayList<T>) savedInstanceState.getSerializable(SAVED_DATAS);
+        mAdapter = newAdapter(datas);
+
+        if (savedInstanceState != null && savedInstanceState.getSerializable(SAVED_PAGING) != null) {
+            mPaging = (IPaging) savedInstanceState.getSerializable(SAVED_PAGING);
+        } else {
+            mPaging = newPaging();
+        }
     }
 
     public static class RefreshConfig implements Serializable {
