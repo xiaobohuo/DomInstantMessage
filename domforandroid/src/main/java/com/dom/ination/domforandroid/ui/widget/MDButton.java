@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.dom.ination.domforandroid.R;
+import com.dom.ination.domforandroid.common.md.MDHelper;
 
 /**
  * Created by huoxiaobo on 16/8/24

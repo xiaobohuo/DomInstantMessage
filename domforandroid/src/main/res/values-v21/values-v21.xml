@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="msf_interpolator" type="interpolator">@android:interpolator/fast_out_slow_in</item>
+    <style name="LoadingProgressBar">
+        android:indeterminateDrawable="@drawable/loading_bar1
+    </style>
+</resources>
