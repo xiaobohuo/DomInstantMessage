@@ -6,6 +6,9 @@ import android.os.Environment;
 import com.dom.ination.domforandroid.common.context.GlobalContext;
 import com.dom.ination.domforandroid.common.setting.SettingUtility;
 import com.dom.ination.domforandroid.component.bitmaploader.BitmapLoader;
+import com.dom.ination.domforandroid.network.task.TaskException;
+import com.dom.ination.dominstantmessage.sinasdk.core.SinaErrorMsgUtil;
+import com.dom.ination.dominstantmessage.support.SinaDB;
 
 import java.io.File;
 import java.util.Random;
@@ -28,6 +31,10 @@ public class MyApplication extends GlobalContext{
         setupCrash();
         //初始化图片加载
         BitmapLoader.newInstance(this,getImagePath());
+        // 配置异常处理类
+        TaskException.config(new SinaErrorMsgUtil());
+        // 初始化数据库
+        SinaDB.setInitDB();
     }
 
     public static String getImagePath() {
